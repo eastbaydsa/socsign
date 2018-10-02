@@ -1,0 +1,5 @@
+[run]
+include = socsign/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
