@@ -63,6 +63,8 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     # 'django.contrib.humanize', # Handy template tags
     'django.contrib.admin',
+
+    'django.forms', # required to 
 ]
 THIRD_PARTY_APPS = [
     'crispy_forms',
@@ -244,3 +246,5 @@ INSTALLED_APPS += ['compressor']
 STATICFILES_FINDERS += ['compressor.finders.CompressorFinder']
 # Your stuff...
 # ------------------------------------------------------------------------------
+# https://timonweb.com/tutorials/overriding-field-widgets-in-django-doesnt-work-template-not-found-the-solution/
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'

@@ -4,6 +4,7 @@ from socsign.signin.models import EventForm, InterestChoice
 
 from . import nbapi
 
+
 def get_event_choices():
     upcoming_events = nbapi.get_upcoming_events()
     return [
@@ -11,30 +12,34 @@ def get_event_choices():
         for event in upcoming_events
     ]
 
+class AdminEventChooserWidget(forms.widgets.RadioSelect):
+    template_name = "signin/admin_event_chooser.html"
+
+    def get_context(self, *args, **kwargs):
+        ctx = super().get_context(*args, **kwargs)
+        return ctx
+
 
 class EventFormAdminForm(forms.ModelForm):
 
     class Meta:
         model = EventForm
-        fields = ('event', 'variant', 'start_time',
-        'end_time', 'interest_choices')
+        fields = ('event_id', 'variant', 'start_time', 'end_time',
+        'interest_choices')
 
-    event = forms.ChoiceField(
+    event_id = forms.ChoiceField(
         required=True,
         choices=get_event_choices,
-        widget=forms.RadioSelect,
+        widget=AdminEventChooserWidget,
     )
 
-
-    def clean(self):
-        cleaned_data = super().clean()
-        self.cleaned_data['event_id'] = self.cleaned_data.get('event', None)
-        self.cleaned_data['event_title'] = dict(get_event_choices())[event_id]
-
-    #def save(self, commit=True):
-    #    event.event_id = event_id
-    #    event.event_title = event_title
-    #    return event
+    def save(self, commit=True):
+        event = super().save(commit=commit)
+        event_id = self.cleaned_data.get('event_id', None)
+        event_title = dict(get_event_choices())[event_id]
+        event.event_id = event_id
+        event.event_title = event_title
+        return event
 
 
 @admin.register(EventForm)
