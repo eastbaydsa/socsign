@@ -244,6 +244,7 @@ SOCIALACCOUNT_ADAPTER = 'socsign.users.adapters.SocialAccountAdapter'
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
 INSTALLED_APPS += ['compressor']
 STATICFILES_FINDERS += ['compressor.finders.CompressorFinder']
+
 # Your stuff...
 # ------------------------------------------------------------------------------
 # https://timonweb.com/tutorials/overriding-field-widgets-in-django-doesnt-work-template-not-found-the-solution/
