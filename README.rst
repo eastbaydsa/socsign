@@ -1,10 +1,7 @@
 Socialism Sign In
 =================
 
-Sign me up!
-
-
-:License: GPLv3
+:License: AGPLv3
 
 
 Settings

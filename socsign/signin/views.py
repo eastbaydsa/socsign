@@ -1,12 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import EventForm
-from .forms import EventFormStandard
+from .forms import EventFormStandard, EventFormLabor
 
+form_variants = {
+    'standard': EventFormStandard,
+    'labor': EventFormLabor,
+}
 
 def event_form(request, public_hex):
     event = get_object_or_404(EventForm, public_hex=public_hex)
-    FormClass = EventFormStandard
+
+    FormClass = form_variants[event.variant]
 
     request.session['last_form'] = public_hex
 
@@ -17,7 +22,11 @@ def event_form(request, public_hex):
         # Is POST: Create a form based on POST data
         form = FormClass(request.POST, event=event)
         if form.is_valid():
-            return HttpResponseRedirect("/thanks/")
+            ctx = {
+                'show_check': True,
+                'timeout': 3.0,
+            }
+            return render(request, 'signin/event_form.html', ctx)
 
     ctx = {
         'form': form,

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django import forms
 from socsign.signin.models import EventForm, InterestChoice
+from django.utils.html import format_html
 
 from . import nbapi
 
@@ -44,10 +45,14 @@ class EventFormAdminForm(forms.ModelForm):
 
 @admin.register(EventForm)
 class EventFormAdmin(admin.ModelAdmin):
-    list_display = ('event_title', 'event_id', 'start_time', 'end_time')
+    list_display = ('event_title', 'event_id', 'start_time', 'end_time', 'form_url_column')
     exclude = ('public_hex', 'secret_hex')
     form = EventFormAdminForm
 
+    def form_url_column(self, obj):
+        url = obj.get_absolute_url()
+        return format_html('<a target="_blank" href="{0}">{0}</a>', url)
+    form_url_column.short_description = 'Display URL'
 
 @admin.register(InterestChoice)
 class InterestChoiceAdmin(admin.ModelAdmin):

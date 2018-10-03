@@ -24,6 +24,8 @@ Pillow = "==5.3.0"
 "argon2_cffi" = "==18.3.0"
 Django = "==2.0.9"
 django_compressor = "==2.2"
+django-localflavor = "*"
+django-phonenumber-field = "*"
 
 [dev-packages]
 mypy = "*"

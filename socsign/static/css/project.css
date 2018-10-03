@@ -13,10 +13,18 @@
 
 .navbar-dark {
     background: #ed2c24 !important;
-    font-size: 18px;
+    font-size: 28px;
 }
 
 li {
     list-style: none !important;
+}
+
+.col-form-label {
+    font-size: 18pt;
+}
+
+.form-control {
+    font-size: 18pt;
 }
 

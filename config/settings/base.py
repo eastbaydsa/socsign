@@ -248,3 +248,6 @@ STATICFILES_FINDERS += ['compressor.finders.CompressorFinder']
 # ------------------------------------------------------------------------------
 # https://timonweb.com/tutorials/overriding-field-widgets-in-django-doesnt-work-template-not-found-the-solution/
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
+PHONENUMBER_DEFAULT_REGION = 'US'
+PHONENUMBER_DB_FORMAT = 'NATIONAL'

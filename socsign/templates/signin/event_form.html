@@ -14,7 +14,22 @@
 
 {% block content %}
 
-    {% csrf_token %}
-    {% crispy form %}
+    {% if show_check %}
+        <div style="font-size: 64pt; text-align: center">
+            <a href='{{ request.get_full_path }}'>
+                <br />
+                ✅
+                <br />
+            </a>
+        </div>
+
+        <script>
+            setTimeout(function() {
+                window.location.href = '{{ request.get_full_path }}';
+            }, {{ timeout }} * 1000);
+        </script>
+    {% else %}
+        {% crispy form %}
+    {% endif %}
 
 {% endblock content %}
