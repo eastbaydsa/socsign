@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block nav_links %}
+{% endblock nav_links %}
+
+{% block nav_brand %}
+    {{ event.event_title }}
+{% endblock nav_brand %}
+
+
+{% block nav_brand_link %}#{% endblock %}
+
+
+{% block content %}
+
+    {% csrf_token %}
+    {% crispy form %}
+
+{% endblock content %}
