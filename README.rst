@@ -3,6 +3,24 @@ Socialism Sign In
 
 :License: AGPLv3
 
+Adding .env/.local
+--------
+
+.env/.local/.django
+
+::
+    REDIS_URL=redis://redis:6379/0
+    NB_TOKEN=XX
+    NB_SITE_SLUG=YY
+
+.env/.local/.postgres
+
+::
+    POSTGRES_HOST=postgres
+    POSTGRES_PORT=5432
+    POSTGRES_DB=socsign
+    POSTGRES_USER=
+    POSTGRES_PASSWORD=
 
 Settings
 --------
