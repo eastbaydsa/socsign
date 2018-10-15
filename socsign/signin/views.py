@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import EventForm
 from .forms import EventFormStandard, EventFormLabor
 
+from . import nbapi
+
 form_variants = {
     'standard': EventFormStandard,
     'labor': EventFormLabor,
@@ -26,6 +28,10 @@ def event_form(request, public_hex):
                 'show_check': True,
                 'timeout': 3.0,
             }
+
+            # let's do a person add API event
+            json = nbapi.person_add(form.cleaned_data)
+            print('just added person', json)
             return render(request, 'signin/event_form.html', ctx)
 
     ctx = {

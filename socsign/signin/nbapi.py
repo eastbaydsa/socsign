@@ -1,53 +1,44 @@
+import json
+
 import requests
 from django.utils.dateparse import parse_datetime
-from datetime import datetime, timedelta
-from functools import wraps
+from django.conf import settings
+
+from .helpers import throttle, prune_dict
 
 #from .test_data import nb_events
 
-# Throttle API hits with a decorator, taken & modified from:
-# https://gist.github.com/ChrisTM/5834503
-class throttle:
-    """
-    Decorator that prevents a function from being called more than once every
-    time period.
-    To create a function that cannot be called more than once a minute:
-        @throttle(minutes=1)
-        def my_fun():
-            pass
-    """
-    def __init__(self, seconds=3):
-        self.throttle_period = timedelta(seconds=seconds)
-        self.time_of_last_call = datetime.min
-        self.last_return = None
-
-    def __call__(self, fn):
-        @wraps(fn)
-        def wrapper(*args, **kwargs):
-            now = datetime.now()
-            time_since_last_call = now - self.time_of_last_call
-            if time_since_last_call > self.throttle_period:
-                self.time_of_last_call = now
-                self.last_return = fn(*args, **kwargs)
-            return self.last_return
-        return wrapper
-
 DOMAIN = 'http://{slug}.nationbuilder.com'
-PATH = 'api/v1/sites/{slug}/pages'
-QUERYSTRING = '{page}&access_token={token}'
-TEMPLATE = '/'.join([DOMAIN, PATH, QUERYSTRING])
 
-def _url(page):
-    link = TEMPLATE.format(
+def _url_pages(page):
+    template = '/'.join([
+        DOMAIN,
+        'api/v1/sites/{slug}/pages',
+        '{page}&access_token={token}',
+    ])
+    uri = template.format(
         slug=settings.NB_SITE_SLUG,
         token=settings.NB_TOKEN,
         page=page,
     )
-    return link
+    return uri
+
+def _url_people(verb):
+    template = '/'.join([
+        DOMAIN,
+        'api/v1/people',
+        '{page}?access_token={token}',
+    ])
+    uri = template.format(
+        slug=settings.NB_SITE_SLUG,
+        token=settings.NB_TOKEN,
+        page=verb,
+    )
+    return uri
 
 @throttle()
 def get_upcoming_events():
-    response = requests.get(_url('events?limit=30&__proto__='))
+    response = requests.get(_url_pages('events?limit=30&__proto__='))
     nb_events = response.json()
     results = []
     for event in nb_events['results']:
@@ -61,3 +52,45 @@ def get_upcoming_events():
         })
     return results
 
+def person_tag(person_id, info):
+    pass
+
+def person_add(info):
+
+    # Upsert person
+    info_dict = {
+        'email': info['email'],
+        'first_name': info['first_name'],
+        'last_name': info['last_name'],
+        'mobile': info['mobile_number'],
+        'phone': info['home_phone_number'],
+        'address': info['address'],
+        'primary_address': {
+            'address1': info['address'],
+            'city': info['city'],
+            'zip': info['zip_code'],
+        },
+    }
+    prune_dict(info_dict)
+
+    # for some reason we need to put it in a dict
+    # called person
+    request_dict = {
+        "person": info_dict,
+    }
+
+    headers = {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+    }
+
+    url = _url_people('push')
+    print(url)
+    print(request_dict)
+    #response = requests.post(url, json=request_dict)
+    response = requests.post(url, data=json.dumps(request_dict), headers=headers)
+    d = response.json()
+    return d
+
+
+#jefflee.nationbuilder.com/api/v1/people/add?access_token=ba7cfd89bac4db76e3433e72c9198355f8034fbc75cfd051ae15077addceda4c
