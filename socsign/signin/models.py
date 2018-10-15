@@ -45,7 +45,10 @@ class EventForm(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
-    interest_choices = models.ManyToManyField('InterestChoice')
+    interest_choices = models.ManyToManyField(
+        'InterestChoice',
+        default=InterestChoice.objects.all,
+    )
 
     def __str__(self):
         return '%s [%s]' % (self.event_title, self.event_id)

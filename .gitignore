@@ -272,7 +272,6 @@ socsign/media/
 .pytest_cache/
 .env
 .envs/*
-!.envs/.local/
 
 db.sqlite3
 

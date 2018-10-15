@@ -252,3 +252,8 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 PHONENUMBER_DEFAULT_REGION = 'US'
 PHONENUMBER_DB_FORMAT = 'NATIONAL'
+
+NB_SITE_SLUG = env('NB_SITE_SLUG')
+NB_TOKEN = env('NB_TOKEN')
+
+

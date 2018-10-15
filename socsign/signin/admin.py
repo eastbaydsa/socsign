@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import admin
 from django import forms
 from socsign.signin.models import EventForm, InterestChoice
@@ -9,7 +11,7 @@ from . import nbapi
 def get_event_choices():
     upcoming_events = nbapi.get_upcoming_events()
     return [
-        (event['site_slug'], event['name'])
+        (event['slug'], event['name'])
         for event in upcoming_events
     ]
 
@@ -18,6 +20,9 @@ class AdminEventChooserWidget(forms.widgets.RadioSelect):
 
     def get_context(self, *args, **kwargs):
         ctx = super().get_context(*args, **kwargs)
+        events_json = json.dumps(nbapi.get_upcoming_events(), indent=2)
+        ctx['events_json'] = events_json
+        print('i am in context', ctx)
         return ctx
 
 
@@ -25,15 +30,23 @@ class EventFormAdminForm(forms.ModelForm):
 
     class Meta:
         model = EventForm
-        fields = ('event_id', 'variant', 'start_time', 'end_time',
-        'interest_choices')
+        fields = (
+            'event_id',
+            'event_title',
+            'start_time',
+            'end_time',
+            'variant',
+            'interest_choices',
+        )
 
     event_id = forms.ChoiceField(
         required=True,
+        label="Event",
         choices=get_event_choices,
         widget=AdminEventChooserWidget,
     )
 
+    '''
     def save(self, commit=True):
         event = super().save(commit=commit)
         event_id = self.cleaned_data.get('event_id', None)
@@ -41,6 +54,7 @@ class EventFormAdminForm(forms.ModelForm):
         event.event_id = event_id
         event.event_title = event_title
         return event
+    '''
 
 
 @admin.register(EventForm)
