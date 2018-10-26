@@ -1,5 +1,3 @@
-
-
 nb_events = {
     "next": "/api/v1/sites/siteslug/pages/events?__nonce=3OUjEzI6iyybc1F3sk6YrQ&__token=ADGvBW9wM69kUiss1KqTIyVeQ5M6OwiL6ttexRFnHK9m&starting=2013-03-01",
     "prev": None,

@@ -1,15 +1,21 @@
 from django.db import models
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 import os
 import binascii
 
-def random_hex(count=8):
+def random_hex(count=10):
     return binascii.b2a_hex(os.urandom(count))[:count].decode('utf8')
+
+def validate_tag(data):
+    if not data.replace('_', '').isalnum():
+        raise ValidationError('Invalid tag: Alphanumeric and "_" permitted.')
+
 
 class InterestChoice(models.Model):
     caption = models.CharField(max_length=128)
-    tag = models.CharField(max_length=64, unique=True)
+    tag = models.CharField(max_length=64, unique=True, validators=[validate_tag])
 
     def __str__(self):
         return self.caption
@@ -29,6 +35,7 @@ class EventForm(models.Model):
     secret_hex = models.CharField(max_length=10, default=random_hex)
 
     event_id = models.CharField(max_length=64)
+    event_tag = models.CharField(max_length=127, validators=[validate_tag])
     event_title = models.CharField(max_length=255)
 
     VARIANT = (
@@ -51,7 +58,10 @@ class EventForm(models.Model):
     )
 
     def __str__(self):
-        return '%s [%s]' % (self.event_title, self.event_id)
+        return '%s [%s]' % (self.event_title, self.event_tag)
+
+    def get_submission_count(self):
+        return self.records.all().count()
 
     def get_absolute_url(self):
         public_hex = self.public_hex
@@ -61,6 +71,10 @@ class EventForm(models.Model):
 
 
 class Record(models.Model):
-    event = models.ForeignKey(EventForm, on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        EventForm,
+        on_delete=models.CASCADE,
+        related_name='records',
+    )
     created = models.DateTimeField(auto_now_add=True)
 

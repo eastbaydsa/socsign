@@ -42,6 +42,10 @@ class EventFormBase(forms.Form):
             event.interest_choices.all()
         ]
 
+    def get_tags(self, event):
+        tags = list(self.cleaned_data['interest'])
+        tags.append(event.event_tag)
+        return tags
 
 class EventFormStandard(EventFormBase):
     pass
