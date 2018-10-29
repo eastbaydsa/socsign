@@ -63,6 +63,7 @@ class EventForm(models.Model):
     def get_submission_count(self):
         return self.records.all().count()
 
+    # Hack: Disabled until we get a real domain name
     def get_absolute_url(self):
         public_hex = self.public_hex
         secret_hex = self.secret_hex

@@ -1,0 +1,50 @@
+[
+  {
+    "model": "signin.InterestChoice",
+    "pk": 1,
+    "fields": {
+      "caption": "Medicare for All",
+      "tag": "interest_m4a"
+    }
+  },
+  {
+    "model": "signin.InterestChoice",
+    "pk": 2,
+    "fields": {
+      "caption": "Social Housing Campaign",
+      "tag": "interest_housing"
+    }
+  },
+  {
+    "model": "signin.InterestChoice",
+    "pk": 3,
+    "fields": {
+      "caption": "Electoral Organizing",
+      "tag": "interest_electoral"
+    }
+  },
+  {
+    "model": "signin.InterestChoice",
+    "pk": 4,
+    "fields": {
+      "caption": "Political Education",
+      "tag": "interest_education"
+    }
+  },
+  {
+    "model": "signin.InterestChoice",
+    "pk": 5,
+    "fields": {
+      "caption": "Labor Direct Action Rapid Response",
+      "tag": "rapid_response_labor"
+    }
+  },
+  {
+    "model": "signin.InterestChoice",
+    "pk": 6,
+    "fields": {
+      "caption": "Labor Organizing",
+      "tag": "interest_labor"
+    }
+  }
+]

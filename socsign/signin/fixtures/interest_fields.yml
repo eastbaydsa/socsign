@@ -1,0 +1,30 @@
+- model: socsign.interestchoice
+  pk: 1
+  fields:
+    caption: Medicare for All
+    tag: interest_m4a
+- model: socsign.interestchoice
+  pk: 2
+  fields:
+    caption: Social Housing Campaign
+    tag: interest_housing
+- model: socsign.interestchoice
+  pk: 3
+  fields:
+    caption: Electoral Organizing
+    tag: interest_electoral
+- model: socsign.interestchoice
+  pk: 4
+  fields:
+    caption: Political Education
+    tag: interest_education
+- model: socsign.interestchoice
+  pk: 5
+  fields:
+    caption: Labor Direct Action Rapid Response
+    tag: rapid_response_labor
+- model: socsign.interestchoice
+  pk: 6
+  fields:
+    caption: Labor Organizing
+    tag: interest_labor
